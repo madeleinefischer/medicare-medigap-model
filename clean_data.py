@@ -1,7 +1,7 @@
 # Test
 
-#import pandas as pd
-#import numpy as np
+import pandas as pd
+import numpy as np
 
 dir = "C:/Users/MadeleineFischer/OneDrive - Committee for a Responsible Federal Budget/Documents/Medicare"
 survey_data = pd.read_csv(f"{dir}/Medicare Current Beneficiary Survey - Survey File/SFPUF2023_Data/sfpuf2023_1_fall.csv")
