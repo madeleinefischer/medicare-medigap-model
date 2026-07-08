@@ -12,11 +12,17 @@ cost_data = pd.read_csv(f"{dir}/Medicare Current Beneficiary Survey - Cost Suppl
 # Format into DataFrame
 cost_supplement = pd.DataFrame(cost_data)
 
-# Part A = inpatient + share(home health) + 
-cost_supplement['medicare_partA'] = cost_supplement['PAMTIP'] + cost_supplement['PAMTHH']
+# Calculate share of participants with a private plan
+participation_rate = cost_supplement[cost_supplement['PAMTALPR'] > 0].shape[0] / cost_supplement.shape[0]
 
-# Part B = outpatient + share(home health) + medical provider + dental + vision + hearing
-cost_supplement['medicare_partB'] = cost_supplement['PAMTMP'] + cost_supplement['PAMTDU'] + cost_supplement['PAMTVU'] + cost_supplement['PAMTHU'] + cost_supplement['PAMTDU']
+# Share of home health costs in Medicare Part A
+share_home_health = 0.5
+
+# Part A = inpatient + share(home health) 
+cost_supplement['medicare_A_total_cost_baseline'] = cost_supplement['PAMTIP'] + (cost_supplement['PAMTHH'] * share_home_health)
+
+# Part B = outpatient + share(home health) + medical provider
+cost_supplement['medicare_B_total_cost_baseline'] = cost_supplement['PAMTOP'] + (cost_supplement['PAMTHH'] * (1 - share_home_health)) + cost_supplement['PAMTMP']
 
 # Calculate effective coinsurance rates for Part A and Part B
 
